@@ -16,6 +16,10 @@ export class HomeComponent {
   constructor(private productService: ProductsService) { }
   products: Product[] = [];
   
+  onProductOutput(product:Product) {
+    console.log(product,'Output')
+  }
+
   ngOnInit() {
     this.productService.getProducts('http://localhost:3000/clothes', { page: 0, perPage: 5 }).subscribe((products: Products) => {
       //click cntrl+left click hover on products to see items we have been rendering so far
