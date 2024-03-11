@@ -3,11 +3,12 @@ import { ProductsService } from '../services/products.service';
 import { Product, Products } from '../../types';
 import { ProductComponent } from '../components/product/product.component';
 import { CommonModule } from '@angular/common';
+import { PaginatorModule } from 'primeng/paginator';
 
 @Component({
   selector: 'app-home',
   standalone: true,
-  imports: [ProductComponent,CommonModule],
+  imports: [ProductComponent,CommonModule,PaginatorModule],
   templateUrl: './home.component.html',
   styleUrl: './home.component.scss'
 })
@@ -15,17 +16,25 @@ export class HomeComponent {
 
   constructor(private productService: ProductsService) { }
   products: Product[] = [];
-  
+
+  totalRecords: number = 0;
+
   onProductOutput(product:Product) {
     console.log(product,'Output')
   }
+  onPageChange(event:any) {
+    this.fetchProducts(event.page, event.rows);
+}
+
+  fetchProducts(page: number, perPage: number) {
+  this.productService.getProducts('http://localhost:3000/clothes', { page: 0, perPage: 5 }).subscribe((products: Products) => {
+    this.products = products.items;
+    this.totalRecords = products.total;
+    });
+}
+
 
   ngOnInit() {
-    this.productService.getProducts('http://localhost:3000/clothes', { page: 0, perPage: 5 }).subscribe((products: Products) => {
-      //click cntrl+left click hover on products to see items we have been rendering so far
-      //console.log(products.items);
-      //to access products from this 'products: Product[] = [];' use "this" key word
-      this.products = products.items;
-   }) 
+    this.fetchProducts(0, 5);
   }
 }
