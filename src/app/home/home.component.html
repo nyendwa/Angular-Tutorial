@@ -29,7 +29,7 @@
 <!--Edit Product-->
 <app-edit-popup
   [product]="selectedProduct"
-  [display]="displayEditPopup"
+  [(display)]="displayEditPopup"
   (confirm)="onConfirmEdit($event)"
   header="Edit Product"
 >
@@ -37,7 +37,7 @@
 
 <!--Add Product-->
 <app-edit-popup
-  [display]="displayAddPopup"
+  [(display)]="displayAddPopup"
   (confirm)="onConfirmAdd($event)"
   header="Add Product"
 >

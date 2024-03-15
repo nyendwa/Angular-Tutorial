@@ -3,11 +3,15 @@ import { Product } from '../../../types';
 import { RatingModule } from 'primeng/rating';
 import { FormsModule } from '@angular/forms';
 import { ButtonModule } from 'primeng/button';
+import { ToastModule } from 'primeng/toast';
+import { ConfirmPopupModule } from 'primeng/confirmpopup';
+import { ConfirmationService } from 'primeng/api';
 
 @Component({
   selector: 'app-product',
   standalone: true,
-  imports: [RatingModule,FormsModule,ButtonModule],
+  imports: [RatingModule, FormsModule, ButtonModule, ToastModule, ConfirmPopupModule],
+  providers: [ConfirmationService],
   templateUrl: './product.component.html',
   styleUrl: './product.component.scss'
 })

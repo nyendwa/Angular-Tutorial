@@ -16,13 +16,13 @@ import { ButtonModule } from 'primeng/button';
     RatingModule,
     ButtonModule
   ],
-  
   templateUrl: './edit-popup.component.html',
   styleUrl: './edit-popup.component.scss'
 })
 export class EditPopupComponent {
   @Input() display: boolean = false;
-  @Output() confirm = new EventEmitter<any>();
+  
+  @Output() displayChange = new EventEmitter<boolean>();
   
   @Input() header!: string;
 
@@ -33,12 +33,17 @@ export class EditPopupComponent {
     rating: 0,
   };
 
-  @Output() cancel = new EventEmitter<void>();
+  @Output() confirm = new EventEmitter<Product>();
   onConfirm() { 
     this.confirm.emit(this.product);
+    this.display = false;
+    this.displayChange.emit(this.display);
   }
+
+  @Output() cancel = new EventEmitter<void>();
   onCancel() {
     this.display = false;
+    this.displayChange.emit(this.display);
   }
 
 }
