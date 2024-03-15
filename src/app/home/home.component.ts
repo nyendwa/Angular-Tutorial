@@ -4,11 +4,18 @@ import { Product, Products } from '../../types';
 import { ProductComponent } from '../components/product/product.component';
 import { CommonModule } from '@angular/common';
 import { PaginatorModule } from 'primeng/paginator';
+import { EditPopupComponent } from '../components/edit-popup/edit-popup.component';
+import { ButtonModule } from 'primeng/button';
 
 @Component({
   selector: 'app-home',
   standalone: true,
-  imports: [ProductComponent,CommonModule,PaginatorModule],
+  imports: [ProductComponent,
+    CommonModule,
+    PaginatorModule,
+    EditPopupComponent,
+    ButtonModule,
+  ],
   templateUrl: './home.component.html',
   styleUrl: './home.component.scss'
 })
@@ -19,6 +26,42 @@ export class HomeComponent {
 
   totalRecords: number = 0;
   rows: number = 5;
+
+  displayEditPopup: boolean = false;
+  displayAddPopup: boolean = false;
+
+  toggleEditPopup(product:Product) {
+    this.selectedProduct = product;
+    this.displayEditPopup = true;
+  }
+
+  toggleDeletePopup(product:Product) {
+    
+  }
+    toggleAddPopup() {
+    this.displayAddPopup = true;
+  }
+
+  selectedProduct: Product = {
+    id:0,
+    name: '',
+    image: '',
+    price: '',
+    rating: 0,
+  };
+
+  onConfirmEdit(product: Product) {
+    if (!this.selectedProduct.id) {
+      return;
+    }
+    //check if id exist if it exist we can use it
+    //this.editProduct(product, this.selectedProduct.id ?? 0);
+    this.displayEditPopup = false;
+  }
+  onConfirmAdd(product:Product) {
+    this.addProduct(product);
+    this.displayAddPopup = false;
+}
 
   onProductOutput(product:Product) {
     console.log(product,'Output')
@@ -47,18 +90,20 @@ export class HomeComponent {
       
       next: (data) => {
         console.log(data);
+        this.fetchProducts(0, this.rows);
       },
 
       error: (error) => {
         console.log(error);
-      }
+       }
     });
   }
 
- deleteProduct(product: Product, id:number) {
+ deleteProduct(id:number) {
    this.productService.deleteProduct(`http://localhost:3000/clothes/${id}`).subscribe({
      next: (data) => {
        console.log(data);
+       this.fetchProducts(0, this.rows);
      },
 
      error: (error) => {
@@ -70,7 +115,17 @@ export class HomeComponent {
   } 
   
   addProduct(product: Product) {
-    console.log(product, 'add');
+    this.productService.addProduct(`http://localhost:3000/clothes/`, product).subscribe({
+      
+      next: (data) => {
+        console.log(data);
+        this.fetchProducts(0, this.rows);
+      },
+
+      error: (error) => {
+        console.log(error);
+       }
+    });
 }
   
   ngOnInit() {
