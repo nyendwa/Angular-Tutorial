@@ -1,13 +1,12 @@
 <div class="column gap-1">
   <!--Add Product Button-->
   <button
-  type="button"
-  pButton
-  icon="pi pi-plus"
-  (click)="toggleAddPopup()"
-  label="Add Product">
-
-  </button>
+    type="button"
+    pButton
+    icon="pi pi-plus"
+    (click)="toggleAddPopup()"
+    label="Add Product"
+  ></button>
   <!--Product Section-->
   <div class="row wrap gap-1 space-between">
     <app-product
@@ -24,6 +23,7 @@
     [totalRecords]="totalRecords"
     [rowsPerPageOptions]="[5, 10, 20]"
     (onPageChange)="onPageChange($event)"
+    #paginator
   ></p-paginator>
 </div>
 <!--Edit Product-->
@@ -42,4 +42,3 @@
   header="Add Product"
 >
 </app-edit-popup>
-
