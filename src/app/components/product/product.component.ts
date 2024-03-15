@@ -16,6 +16,9 @@ import { ConfirmationService } from 'primeng/api';
   styleUrl: './product.component.scss'
 })
 export class ProductComponent {
+  constructor(private confirmationService:ConfirmationService ) {
+    
+  }
   @Input() product!: Product;
   @Output() edit: EventEmitter<Product> = new EventEmitter<Product>();
   @Output() delete: EventEmitter<Product> = new EventEmitter<Product>();
@@ -26,6 +29,14 @@ export class ProductComponent {
 
   deleteProduct() {
     this.delete.emit(this.product);
+  }
+  confirmDelete() {
+    this.confirmationService.confirm({
+      message: 'Are you sure you want to delete this product?',
+      accept: () => {
+        this.deleteProduct();
+      }
+    })
   }
   
    ngOnInit() {
